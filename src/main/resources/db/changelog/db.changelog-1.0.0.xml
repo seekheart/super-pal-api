@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="miketung" id="01">
+    <createSequence sequenceName="team_sequence" startValue="1"/>
+    <createTable tableName="team">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(25)">
+      </column>
+    </createTable>
+
+    <createSequence sequenceName="player_sequence" startValue="1"/>
+    <createTable tableName="player">
+      <column name="id" autoIncrement="true" type="int">
+        <constraints primaryKey="true" nullable="false"></constraints>
+      </column>
+      <column name="name" type="varchar(256)">
+        <constraints nullable="true" primaryKey="false" unique="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="player_team">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="player_id" type="int">
+        <constraints foreignKeyName="fk_player" references="player(id)"/>
+      </column>
+      <column name="team_id" type="int">
+        <constraints foreignKeyName="fk_team" references="team(id)"/>
+      </column>
+    </createTable>
+
+  </changeSet>
+</databaseChangeLog>
