@@ -1,6 +1,6 @@
 package com.seekheart.superpalapi.web.player;
 
-import com.seekheart.superpalapi.model.Team;
+import com.seekheart.superpalapi.model.domain.Team;
 import com.seekheart.superpalapi.service.TeamService;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.GetMapping;

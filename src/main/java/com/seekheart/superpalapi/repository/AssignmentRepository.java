@@ -1,11 +1,11 @@
 package com.seekheart.superpalapi.repository;
 
-import com.seekheart.superpalapi.model.domain.Team;
+import com.seekheart.superpalapi.model.domain.Assignment;
 import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TeamRepository extends CrudRepository<Team, UUID> {
+public interface AssignmentRepository extends CrudRepository<Assignment, UUID> {
 
 }

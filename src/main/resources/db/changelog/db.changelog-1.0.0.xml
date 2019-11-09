@@ -5,34 +5,74 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
   <changeSet author="miketung" id="01">
-    <createSequence sequenceName="team_sequence" startValue="1"/>
-    <createTable tableName="team">
-      <column name="id" type="int" autoIncrement="true">
+
+    <createTable tableName="Raid">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="rank" type="int">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="League">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="raid_id" type="uuid">
+        <constraints foreignKeyName="fk_raid" references="Raid(id)"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="Boss">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(180)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="hp" type="int"/>
+      <column name="raid_id" type="uuid">
+        <constraints foreignKeyName="fk_raid" references="Raid(id)"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="Team">
+      <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="name" type="varchar(25)">
       </column>
     </createTable>
 
-    <createSequence sequenceName="player_sequence" startValue="1"/>
-    <createTable tableName="player">
-      <column name="id" autoIncrement="true" type="int">
-        <constraints primaryKey="true" nullable="false"></constraints>
+    <createTable tableName="Player">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="discord_id" type="uuid">
+        <constraints unique="true"/>
       </column>
       <column name="name" type="varchar(256)">
         <constraints nullable="true" primaryKey="false" unique="false"/>
       </column>
+      <column name="league_id" type="uuid">
+        <constraints foreignKeyName="fk_league" references="League(id)"/>
+      </column>
+      <column name="role" type="varchar(250)"/>
     </createTable>
 
-    <createTable tableName="player_team">
-      <column name="id" type="int" autoIncrement="true">
+    <createTable tableName="Assignment">
+      <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="player_id" type="int">
-        <constraints foreignKeyName="fk_player" references="player(id)"/>
+      <column name="player_id" type="uuid">
+        <constraints foreignKeyName="fk_player" references="Player(id)"/>
       </column>
-      <column name="team_id" type="int">
-        <constraints foreignKeyName="fk_team" references="team(id)"/>
+      <column name="team_id" type="uuid">
+        <constraints foreignKeyName="fk_team" references="Team(id)"/>
+      </column>
+      <column name="boss_id" type="uuid">
+        <constraints foreignKeyName="fk_boss" references="Boss(id)"/>
       </column>
     </createTable>
 
