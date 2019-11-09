@@ -1,20 +1,12 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 INSERT INTO Player (id, name)
-VALUES (uuid_generate_v4(), 'seekheart');
+VALUES (RANDOM_UUID(), 'seekheart');
 
 
 INSERT INTO Team (id, name)
-VALUES (uuid_generate_v4(), 'KOA');
+VALUES (RANDOM_UUID(), 'KOA');
 INSERT INTO Team (id, name)
-VALUES (uuid_generate_v4(), 'LOA');
+VALUES (RANDOM_UUID(), 'LOA');
 INSERT INTO Team (id, name)
-VALUES (uuid_generate_v4(), 'SB');
+VALUES (RANDOM_UUID(), 'SB');
 INSERT INTO Team (id, name)
-VALUES (uuid_generate_v4(), 'BN');
-
-INSERT INTO Assignment (player_id, team_id)
-VALUES ((SELECT ID
-         FROM PLAYER
-         WHERE name is
-               'seekheart'), 1);
+VALUES (RANDOM_UUID(), 'BN');

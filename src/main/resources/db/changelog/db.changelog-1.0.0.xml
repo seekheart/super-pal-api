@@ -20,7 +20,7 @@
         <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="raid_id" type="uuid">
-        <constraints foreignKeyName="fk_raid" references="Raid(id)"/>
+        <constraints foreignKeyName="fk_raid_league" references="Raid(id)"/>
       </column>
     </createTable>
 
@@ -33,7 +33,7 @@
       </column>
       <column name="hp" type="int"/>
       <column name="raid_id" type="uuid">
-        <constraints foreignKeyName="fk_raid" references="Raid(id)"/>
+        <constraints foreignKeyName="fk_raid_boss" references="Raid(id)"/>
       </column>
     </createTable>
 
@@ -56,9 +56,21 @@
         <constraints nullable="true" primaryKey="false" unique="false"/>
       </column>
       <column name="league_id" type="uuid">
-        <constraints foreignKeyName="fk_league" references="League(id)"/>
+        <constraints foreignKeyName="fk_league_player" references="League(id)"/>
       </column>
       <column name="role" type="varchar(250)"/>
+    </createTable>
+
+    <createTable tableName="Player_Team">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="player_id" type="uuid">
+        <constraints foreignKeyName="fk_player_team" references="Player(id)"/>
+      </column>
+      <column name="team_id" type="uuid">
+        <constraints foreignKeyName="fk_team_player" references="Team(id)"/>
+      </column>
     </createTable>
 
     <createTable tableName="Assignment">
@@ -66,13 +78,13 @@
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="player_id" type="uuid">
-        <constraints foreignKeyName="fk_player" references="Player(id)"/>
+        <constraints foreignKeyName="fk_player_assignment" references="Player(id)"/>
       </column>
       <column name="team_id" type="uuid">
-        <constraints foreignKeyName="fk_team" references="Team(id)"/>
+        <constraints foreignKeyName="fk_team_assignment" references="Team(id)"/>
       </column>
       <column name="boss_id" type="uuid">
-        <constraints foreignKeyName="fk_boss" references="Boss(id)"/>
+        <constraints foreignKeyName="fk_boss_assignment" references="Boss(id)"/>
       </column>
     </createTable>
 

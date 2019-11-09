@@ -9,15 +9,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@AllArgsConstructor
-public class Boss {
+@Data
+public class PlayerTeam {
 
   @Id
   private UUID id;
-  private String name;
-  private Long hp;
-  private UUID raidId;
+  private UUID playerId;
+  private UUID teamId;
 }
