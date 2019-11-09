@@ -15,6 +15,7 @@ public class Boss {
 
   @Id
   private UUID id;
+  private String name;
   private Long hp;
   private UUID raidId;
 }
