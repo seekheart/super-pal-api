@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface PlayerTeamRepository extends CrudRepository<PlayerTeam, UUID> {
 
   Optional<List<PlayerTeam>> findAllByPlayerId(UUID uuid);
-
   Optional<List<PlayerTeam>> findAllByTeamId(UUID uuid);
+
+  Optional<PlayerTeam> findByPlayerIdAndTeamId(UUID playerId, UUID teamId);
 }

@@ -76,4 +76,11 @@ public class PlayerController {
         ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
 
+  @PutMapping("/{id}/teams")
+  public ResponseEntity editTeams(@PathVariable UUID id,
+      @RequestBody PlayerRequest playerRequest) {
+    Boolean result = false;
+
+  }
+
 }

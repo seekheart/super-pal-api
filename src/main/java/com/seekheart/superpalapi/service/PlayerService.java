@@ -136,7 +136,45 @@ public class PlayerService {
     }
 
     return true;
+  }
 
+
+  public void editTeam(UUID playerId, PlayerRequest playerRequest) throws Exception {
+    List<String> teams = playerRequest.getTeams();
+    Player player = playerRepository.findById(playerId).orElse(null);
+    if (player == null) {
+      log.error("Player Id={} does not exist!", playerId);
+      return;
+    }
+
+    teams.forEach(t -> {
+      Team team = teamRepository.findByName(t).orElse(null);
+      if (team == null) {
+        log.error("Could not found team={}", t);
+      }
+
+      PlayerTeam playerTeam =
+          playerTeamRepository.findByPlayerIdAndTeamId(playerId, team.getId()).orElse(null);
+
+      PlayerTeam record = PlayerTeam
+          .builder()
+          .playerId(player.getId())
+          .teamId(team.getId())
+          .build();
+
+      if (playerTeam == null) {
+        record.setId(UUID.randomUUID());
+      } else {
+        record.setId(playerTeam.getId());
+      }
+
+      log.info(
+          "Saving player team record id={} playerId={} teamId={}",
+          record.getId(),
+          record.getPlayerId(), record.getTeamId()
+      );
+      playerTeamRepository.save(record);
+    });
   }
 
   private List<TeamBossAssignment> findPlayerAssignments(List<Assignment> assignments) {
