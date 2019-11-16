@@ -17,7 +17,7 @@ public class Player {
 
   @Id
   private UUID id;
-  private UUID discordId;
+  private String discordId;
   private String name;
   private UUID leagueId;
   private String role;
