@@ -7,6 +7,7 @@ import com.seekheart.superpalapi.model.domain.Player;
 import com.seekheart.superpalapi.model.domain.PlayerTeam;
 import com.seekheart.superpalapi.model.domain.Team;
 import com.seekheart.superpalapi.model.error.LeagueNotFoundException;
+import com.seekheart.superpalapi.model.error.PlayerExistsException;
 import com.seekheart.superpalapi.model.error.PlayerNotFoundException;
 import com.seekheart.superpalapi.model.error.TeamNotFoundException;
 import com.seekheart.superpalapi.model.error.TeamNullException;
@@ -66,6 +67,11 @@ public class PlayerService {
 
 
   public PlayerResponse createPlayer(PlayerRequest playerRequest) {
+    playerRepository.findByDiscordId(playerRequest.getDiscordId()).ifPresent(p -> {
+      log.error("Player = {} already exists id={}", playerRequest.getName(), p.getId());
+      throw new PlayerExistsException(p.getId());
+    });
+
     log.info("Registering Player = {} with discord id = {}",
         playerRequest.getName(),
         playerRequest.getDiscordId());
