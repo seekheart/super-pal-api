@@ -6,6 +6,11 @@ import com.seekheart.superpalapi.model.domain.League;
 import com.seekheart.superpalapi.model.domain.Player;
 import com.seekheart.superpalapi.model.domain.PlayerTeam;
 import com.seekheart.superpalapi.model.domain.Team;
+import com.seekheart.superpalapi.model.error.LeagueNotFoundException;
+import com.seekheart.superpalapi.model.error.PlayerExistsException;
+import com.seekheart.superpalapi.model.error.PlayerNotFoundException;
+import com.seekheart.superpalapi.model.error.TeamNotFoundException;
+import com.seekheart.superpalapi.model.error.TeamNullException;
 import com.seekheart.superpalapi.model.web.PlayerRequest;
 import com.seekheart.superpalapi.model.web.PlayerResponse;
 import com.seekheart.superpalapi.model.web.TeamBossAssignment;
@@ -49,12 +54,12 @@ public class PlayerService {
 
   }
 
-  public PlayerResponse findOne(UUID id) throws Exception {
+  public PlayerResponse findOne(UUID id) {
     Player player = playerRepository.findById(id).orElse(null);
 
     if (player == null) {
       log.error("Player = {} does not exist", id);
-      throw new Exception("Player not found");
+      throw new PlayerNotFoundException(id);
     }
 
     return makeResponse(player);
@@ -62,6 +67,11 @@ public class PlayerService {
 
 
   public PlayerResponse createPlayer(PlayerRequest playerRequest) {
+    playerRepository.findByDiscordId(playerRequest.getDiscordId()).ifPresent(p -> {
+      log.error("Player = {} already exists id={}", playerRequest.getName(), p.getId());
+      throw new PlayerExistsException(p.getId());
+    });
+
     log.info("Registering Player = {} with discord id = {}",
         playerRequest.getName(),
         playerRequest.getDiscordId());
@@ -91,12 +101,13 @@ public class PlayerService {
     return makeResponse(savedPlayer);
   }
 
-  public PlayerResponse editPlayer(PlayerRequest player) throws Exception {
-    Player playerRecord = playerRepository.findByDiscordId(player.getDiscordId()).orElse(null);
+  public PlayerResponse editPlayer(UUID id, PlayerRequest player) {
+    Player playerRecord =
+        playerRepository.findById(id).orElse(null);
 
     if (playerRecord == null) {
-      log.error("No player found with id = {}", player.getDiscordId());
-      throw new Exception("No player found with discord id = " + player.getDiscordId().toString());
+      log.error("No player found with id = {}", id);
+      throw new PlayerNotFoundException(id);
     }
 
     UUID leagueRegistered = null;
@@ -106,7 +117,7 @@ public class PlayerService {
 
       if (league == null) {
         log.error("League = {} does not exist!", player.getLeague());
-        throw new Exception("League does not exist!");
+        throw new LeagueNotFoundException(player.getLeague());
       }
 
       leagueRegistered = league.getId();
@@ -121,22 +132,65 @@ public class PlayerService {
     return makeResponse(savedPlayer);
   }
 
-  public Boolean deletePlayer(UUID id) throws Exception {
+  public void deletePlayer(UUID id) {
     Player playerRecord = playerRepository.findById(id).orElse(null);
 
     if (playerRecord == null) {
       log.error("Invalid player id = {}", id);
-      throw new Exception("Player ID Not Valid!");
+      throw new PlayerNotFoundException(id);
     }
+
     try {
       playerRepository.delete(playerRecord);
     } catch (Exception e) {
       log.error(e.getMessage());
-      return false;
     }
 
-    return true;
+    log.info("Successfully deleted player id={}", id);
+  }
 
+
+  public void editTeam(UUID playerId, PlayerRequest playerRequest) {
+    List<String> teams = playerRequest.getTeams();
+    Player player = playerRepository.findById(playerId).orElse(null);
+
+    if (player == null) {
+      log.error("Player Id={} does not exist!", playerId);
+      throw new PlayerNotFoundException(playerId);
+    } else if (teams.size() == 0 || teams == null) {
+      log.error("No teams to save for player id={}", playerId);
+      throw new TeamNullException(playerId);
+    }
+
+    for (String t : teams) {
+      Team team = teamRepository.findByName(t).orElse(null);
+      if (team == null) {
+        log.error("Team= {} could not found", t);
+        throw new TeamNotFoundException(t);
+      }
+
+      PlayerTeam playerTeam =
+          playerTeamRepository.findByPlayerIdAndTeamId(playerId, team.getId()).orElse(null);
+
+      // no point in persisting if team for that player exists
+      if (playerTeam != null) {
+        log.info("player={} already associated with team={}", playerTeam.getId(), t);
+      } else {
+        PlayerTeam record = PlayerTeam
+            .builder()
+            .id(UUID.randomUUID())
+            .playerId(player.getId())
+            .teamId(team.getId())
+            .build();
+
+        log.info(
+            "Saving player team record id={} playerId={} teamId={}",
+            record.getId(),
+            record.getPlayerId(), record.getTeamId()
+        );
+        playerTeamRepository.save(record);
+      }
+    }
   }
 
   private List<TeamBossAssignment> findPlayerAssignments(List<Assignment> assignments) {
