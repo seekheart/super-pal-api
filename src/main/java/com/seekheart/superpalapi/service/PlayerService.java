@@ -74,9 +74,11 @@ public class PlayerService {
         .role(playerRequest.getRole())
         .build();
 
-    if (playerRequest.getLeague() != null) {
+    String playerLeague = playerRequest.getLeague();
+    log.info("Finding player league={}", playerLeague);
+    if (!playerLeague.equals("")) {
       League league;
-      league = leagueRepository.findByName(playerRequest.getLeague()).orElse(null);
+      league = leagueRepository.findByName(playerLeague).orElse(null);
 
       if (league != null) {
         log.debug("Found league = {} for player = {}", league.getName(), player.getName());
