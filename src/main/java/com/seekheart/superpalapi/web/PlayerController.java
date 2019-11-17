@@ -53,9 +53,15 @@ public class PlayerController {
     service.deletePlayer(id);
   }
 
-  @PutMapping("/{id}/teams")
-  public void editTeams(@PathVariable UUID id, @RequestBody PlayerRequest playerRequest) {
-    service.editTeam(id, playerRequest);
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping("/{id}/teams")
+  public void editTeam(@PathVariable UUID id, @RequestBody PlayerRequest playerRequest) {
+    service.addTeam(id, playerRequest);
+  }
+
+  @DeleteMapping("/{id}/teams")
+  public void deleteTeam(@PathVariable UUID id, @RequestBody PlayerRequest playerRequest) {
+    service.deleteTeam(id, playerRequest);
   }
 
 }

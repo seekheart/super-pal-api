@@ -149,50 +149,6 @@ public class PlayerService {
     log.info("Successfully deleted player id={}", id);
   }
 
-
-  public void editTeam(UUID playerId, PlayerRequest playerRequest) {
-    List<String> teams = playerRequest.getTeams();
-    Player player = playerRepository.findById(playerId).orElse(null);
-
-    if (player == null) {
-      log.error("Player Id={} does not exist!", playerId);
-      throw new PlayerNotFoundException(playerId);
-    } else if (teams.size() == 0 || teams == null) {
-      log.error("No teams to save for player id={}", playerId);
-      throw new TeamNullException(playerId);
-    }
-
-    for (String t : teams) {
-      Team team = teamRepository.findByName(t).orElse(null);
-      if (team == null) {
-        log.error("Team= {} could not found", t);
-        throw new TeamNotFoundException(t);
-      }
-
-      PlayerTeam playerTeam =
-          playerTeamRepository.findByPlayerIdAndTeamId(playerId, team.getId()).orElse(null);
-
-      // no point in persisting if team for that player exists
-      if (playerTeam != null) {
-        log.info("player={} already associated with team={}", playerTeam.getId(), t);
-      } else {
-        PlayerTeam record = PlayerTeam
-            .builder()
-            .id(UUID.randomUUID())
-            .playerId(player.getId())
-            .teamId(team.getId())
-            .build();
-
-        log.info(
-            "Saving player team record id={} playerId={} teamId={}",
-            record.getId(),
-            record.getPlayerId(), record.getTeamId()
-        );
-        playerTeamRepository.save(record);
-      }
-    }
-  }
-
   private List<TeamBossAssignment> findPlayerAssignments(List<Assignment> assignments) {
     return assignments.stream().map(assignment -> {
       Boss boss = bossRepository.findById(assignment.getBossId()).orElse(null);
@@ -230,6 +186,72 @@ public class PlayerService {
         .assignments(new HashSet<>(targets))
         .teams(teams)
         .build();
+  }
+
+  public void addTeam(UUID playerId, PlayerRequest playerRequest) {
+    Player player = playerRepository.findById(playerId).orElse(null);
+    String team = playerRequest.getTeam();
+    List<PlayerTeam> playerExistingTeams =
+        playerTeamRepository.findAllByPlayerId(playerId).orElse(null);
+
+    if (player == null) {
+      log.error("Player Id={} does not exist!", playerId);
+      throw new PlayerNotFoundException(playerId);
+    } else if (team == null) {
+      log.error("No teams to save for player id={}", playerId);
+      throw new TeamNullException(playerId);
+    }
+
+    Team record = teamRepository.findByName(team).orElse(null);
+    if (record == null) {
+      log.error("Team= {} could not found", team);
+      throw new TeamNotFoundException(team);
+      }
+
+    PlayerTeam playerTeam =
+        playerTeamRepository.findByPlayerIdAndTeamId(playerId, record.getId()).orElse(null);
+
+      // no point in persisting if team for that player exists
+      if (playerTeam != null) {
+        log.info("player={} already associated with team={}", playerTeam.getId(), team);
+      } else {
+        PlayerTeam playerRecord = PlayerTeam
+            .builder()
+            .id(UUID.randomUUID())
+            .playerId(player.getId())
+            .teamId(record.getId())
+            .build();
+
+        log.info(
+            "Saving player team record id={} playerId={} teamId={}",
+            playerRecord.getId(),
+            playerRecord.getPlayerId(),
+            playerRecord.getTeamId()
+        );
+        playerTeamRepository.save(playerRecord);
+      }
+
+  }
+
+  public void deleteTeam(UUID playerId, PlayerRequest request) {
+    Team team = teamRepository.findByName(request.getTeam()).orElse(null);
+
+    if (team == null) {
+      log.error("Team={} not associated with player={}", request.getTeam(), playerId);
+      throw new TeamNotFoundException(request.getTeam());
+    }
+
+    PlayerTeam record =
+        playerTeamRepository.findByPlayerIdAndTeamId(playerId, team.getId()).orElse(null);
+
+    if (record == null) {
+      log.error("Team={} not associated with player={}", request.getTeam(), playerId);
+      throw new TeamNotFoundException(request.getTeam());
+    }
+
+    log.info("deleting team={} from player id={}", record.getTeamId(), record.getPlayerId());
+    playerTeamRepository.delete(record);
+
   }
 
 }
