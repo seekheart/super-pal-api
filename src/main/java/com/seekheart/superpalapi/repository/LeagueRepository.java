@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LeagueRepository extends CrudRepository<League, UUID> {
-
   Optional<League> findByName(String name);
 }
