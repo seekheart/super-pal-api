@@ -13,6 +13,9 @@
       <column name="rank" type="int">
         <constraints nullable="false"/>
       </column>
+      <column name="status" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
 
     <createTable tableName="League">
