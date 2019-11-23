@@ -10,3 +10,7 @@ INSERT INTO Team (id, name)
 VALUES (RANDOM_UUID(), 'SB');
 INSERT INTO Team (id, name)
 VALUES (RANDOM_UUID(), 'BN');
+
+
+INSERT INTO League (id, name)
+VALUES (RANDOM_UUID(), 'test league');

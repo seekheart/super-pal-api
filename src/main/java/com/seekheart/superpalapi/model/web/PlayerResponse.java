@@ -19,4 +19,5 @@ public class PlayerResponse {
   private HashSet<String> teams = new HashSet<>();
   @Builder.Default
   private HashSet<TeamBossAssignment> assignments = new HashSet<>();
+  private String league;
 }

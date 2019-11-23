@@ -19,6 +19,9 @@
       <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
+      <column name="name" type="varchar(256)">
+        <constraints nullable="false"/>
+      </column>
       <column name="raid_id" type="uuid">
         <constraints foreignKeyName="fk_raid_league" references="Raid(id)"/>
       </column>

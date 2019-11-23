@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -31,6 +32,7 @@ public class TeamController {
     return ResponseEntity.ok(teamService.findAll());
   }
 
+  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public ResponseEntity<TeamResponse> createOne(@RequestBody TeamRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(teamService.createOne(request));
