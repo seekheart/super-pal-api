@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,11 @@ public class LeagueController {
     return leagueService.findAll();
   }
 
+  @GetMapping("/{id}")
+  public LeagueResponse findOne(@PathVariable UUID id) {
+    return leagueService.findOne(id);
+  }
+
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public LeagueResponse createOne(@RequestBody LeagueRequest request) {
@@ -37,5 +43,11 @@ public class LeagueController {
   @PutMapping("/{id}")
   public LeagueResponse editOne(@PathVariable UUID id, @RequestBody LeagueRequest request) {
     return leagueService.editLeague(id, request);
+  }
+
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{id}")
+  public void deleteOne(@PathVariable UUID id) {
+    leagueService.deleteOne(id);
   }
 }

@@ -179,13 +179,26 @@ public class PlayerService {
     List<Assignment> assignments = assignmentRepository.findAllByPlayerId(player.getId());
     List<TeamBossAssignment> targets = findPlayerAssignments(assignments);
     HashSet<String> teams = getTeamNames(findPlayerTeams(player));
+    League league;
 
-    return PlayerResponse.builder()
+    if (player.getLeagueId() != null) {
+      league = leagueRepository.findById(player.getLeagueId()).orElse(null);
+    } else {
+      league = null;
+    }
+
+    PlayerResponse response = PlayerResponse.builder()
         .id(player.getId())
         .userName(player.getName())
         .assignments(new HashSet<>(targets))
         .teams(teams)
         .build();
+    if (league != null) {
+      response.setLeague(league.getName());
+    }
+
+    return response;
+
   }
 
   public void addTeam(UUID playerId, PlayerRequest playerRequest) {

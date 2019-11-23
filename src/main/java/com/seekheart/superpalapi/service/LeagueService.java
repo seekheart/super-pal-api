@@ -99,4 +99,25 @@ public class LeagueService {
 
 
   }
+
+  public LeagueResponse findOne(UUID id) {
+    League league = leagueRepository.findById(id).orElse(null);
+
+    if (league == null) {
+      throw new LeagueNotFoundException(id);
+    }
+
+    return makeResponse(league);
+  }
+
+  public void deleteOne(UUID id) {
+    League league = leagueRepository.findById(id).orElse(null);
+
+    if (league == null) {
+      throw new LeagueNotFoundException(id);
+    }
+
+    leagueRepository.delete(league);
+
+  }
 }
