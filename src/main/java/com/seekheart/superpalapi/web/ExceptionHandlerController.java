@@ -6,6 +6,8 @@ import com.seekheart.superpalapi.model.error.LeagueNotFoundException;
 import com.seekheart.superpalapi.model.error.LeagueNullException;
 import com.seekheart.superpalapi.model.error.PlayerExistsException;
 import com.seekheart.superpalapi.model.error.PlayerNotFoundException;
+import com.seekheart.superpalapi.model.error.RaidActiveException;
+import com.seekheart.superpalapi.model.error.RaidNotFoundException;
 import com.seekheart.superpalapi.model.error.TeamNotFoundException;
 import com.seekheart.superpalapi.model.error.TeamNullException;
 import java.io.IOException;
@@ -21,7 +23,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ExceptionHandler({
       PlayerNotFoundException.class,
       LeagueNotFoundException.class,
-      TeamNotFoundException.class
+      TeamNotFoundException.class,
+      RaidNotFoundException.class
   })
   public void springHandleNotFound(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.NOT_FOUND.value());
@@ -30,7 +33,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   @ExceptionHandler({
       TeamNullException.class,
       LeagueNameNullException.class,
-      LeagueNullException.class
+      LeagueNullException.class,
+      RaidActiveException.class
   })
   public void springHandleNullRequest(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.BAD_REQUEST.value());
