@@ -62,4 +62,23 @@ public class RaidService {
 
     return new RaidResponse(saved);
   }
+
+  public RaidResponse editOne(UUID raidId, RaidRequest request) {
+    Raid record =
+        raidRepository.findById(raidId)
+            .orElseThrow(() -> new RaidNotFoundException(request.getLeagueName()));
+
+    record.setRank(request.getTier());
+    record.setStatus(request.getStatus());
+
+    Raid newRecord = raidRepository.save(record);
+
+    return new RaidResponse(newRecord);
+  }
+
+  public void deleteOne(UUID raidId) {
+    raidRepository.delete(
+        raidRepository.findById(raidId).orElseThrow(() -> new RaidNotFoundException(raidId))
+    );
+  }
 }

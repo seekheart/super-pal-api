@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class RaidRequest {
 
   private UUID leagueId;
+  private String leagueName;
   private Long tier;
   private RaidStatusOptions status;
 }
