@@ -23,4 +23,5 @@ public class Raid {
   private Long rank;
   @Enumerated(EnumType.STRING)
   private RaidStatusOptions status;
+  private UUID leagueId;
 }

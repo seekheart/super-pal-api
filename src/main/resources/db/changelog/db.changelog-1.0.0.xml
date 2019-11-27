@@ -6,17 +6,9 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
   <changeSet author="miketung" id="01">
 
-    <createTable tableName="Raid">
-      <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="rank" type="int">
-        <constraints nullable="false"/>
-      </column>
-      <column name="status" type="varchar(50)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
+    <addForeignKeyConstraint baseColumnNames="league_id" baseTableName="Raid"
+      constraintName="fk_league_raid"
+      referencedColumnNames="id" referencedTableName="League"/>
 
     <createTable tableName="League">
       <column name="id" type="uuid">
@@ -94,5 +86,17 @@
       </column>
     </createTable>
 
+    <createTable tableName="Raid">
+      <column name="id" type="uuid">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="rank" type="int">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="league_id" type="uuid"/>
+    </createTable>
   </changeSet>
 </databaseChangeLog>
