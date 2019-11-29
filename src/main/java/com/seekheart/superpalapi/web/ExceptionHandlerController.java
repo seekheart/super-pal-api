@@ -1,5 +1,9 @@
 package com.seekheart.superpalapi.web;
 
+import com.seekheart.superpalapi.model.error.BossExistsException;
+import com.seekheart.superpalapi.model.error.BossNotFoundException;
+import com.seekheart.superpalapi.model.error.BossNullException;
+import com.seekheart.superpalapi.model.error.GenericBadRequest;
 import com.seekheart.superpalapi.model.error.LeagueExistsException;
 import com.seekheart.superpalapi.model.error.LeagueNameNullException;
 import com.seekheart.superpalapi.model.error.LeagueNotFoundException;
@@ -24,7 +28,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
       PlayerNotFoundException.class,
       LeagueNotFoundException.class,
       TeamNotFoundException.class,
-      RaidNotFoundException.class
+      RaidNotFoundException.class,
+      BossNotFoundException.class
   })
   public void springHandleNotFound(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.NOT_FOUND.value());
@@ -34,7 +39,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
       TeamNullException.class,
       LeagueNameNullException.class,
       LeagueNullException.class,
-      RaidActiveException.class
+      RaidActiveException.class,
+      BossNullException.class,
+      GenericBadRequest.class
   })
   public void springHandleNullRequest(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.BAD_REQUEST.value());
@@ -42,7 +49,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({
       PlayerExistsException.class,
-      LeagueExistsException.class
+      LeagueExistsException.class,
+      BossExistsException.class,
   })
   public void springHandleAlreadyExistsRequest(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.CONFLICT.value());

@@ -16,4 +16,7 @@ INSERT INTO League (id, name)
 VALUES (RANDOM_UUID(), 'test league');
 
 INSERT INTO Raid (id, rank, status)
-VALUES (RANDOM_UUID(), 7, 'STARTED')
+VALUES (RANDOM_UUID(), 7, 'STARTED');
+
+INSERT INTO Boss(id, name, hp)
+VALUES (RANDOM_UUID(), 'GG', 2000);
