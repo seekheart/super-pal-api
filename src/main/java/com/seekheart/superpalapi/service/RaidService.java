@@ -1,6 +1,7 @@
 package com.seekheart.superpalapi.service;
 
 import com.seekheart.superpalapi.model.domain.Raid;
+import com.seekheart.superpalapi.model.error.LeagueNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidActiveException;
 import com.seekheart.superpalapi.model.error.RaidNotFoundException;
 import com.seekheart.superpalapi.model.options.RaidStatusOptions;
@@ -80,5 +81,11 @@ public class RaidService {
     raidRepository.delete(
         raidRepository.findById(raidId).orElseThrow(() -> new RaidNotFoundException(raidId))
     );
+  }
+
+  public RaidResponse findByLeagueId(UUID id) {
+    Raid record =
+        raidRepository.findByLeagueId(id).orElseThrow(() -> new LeagueNotFoundException(id));
+    return new RaidResponse(record);
   }
 }
