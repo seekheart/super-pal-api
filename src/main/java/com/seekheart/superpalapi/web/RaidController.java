@@ -36,6 +36,11 @@ public class RaidController {
     return raidService.findOne(id);
   }
 
+  @GetMapping("/leagues/{id}")
+  public RaidResponse findByLeagueId(@PathVariable UUID id) {
+    return raidService.findByLeagueId(id);
+  }
+
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   public RaidResponse createOne(@RequestBody RaidRequest request) {
