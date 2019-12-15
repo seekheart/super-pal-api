@@ -55,6 +55,7 @@ public class RaidService {
     return RaidResponse.builder()
         .id(raid.getId())
         .bosses(bosses)
+        .tier(raid.getTier())
         .state(raid.getState())
         .build();
   }
@@ -120,7 +121,7 @@ public class RaidService {
     List<Raid> raidInProg = raidRepository.findByState(RaidStatusOptions.IN_PROGRESS)
         .orElse(Collections.emptyList());
 
-    if (!raidFunding.isEmpty() && !raidInProg.isEmpty()) {
+    if (!raidFunding.isEmpty() || !raidInProg.isEmpty()) {
       log.error("Cannot make a new raid while an active raid is present!");
       throw new RaidAlreadyActiveException();
     }

@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class RaidResponse {
 
   private UUID id;
+  private Long tier;
   private RaidStatusOptions state;
   private List<Boss> bosses;
 }
