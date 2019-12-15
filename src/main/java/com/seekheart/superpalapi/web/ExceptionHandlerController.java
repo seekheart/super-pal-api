@@ -2,6 +2,7 @@ package com.seekheart.superpalapi.web;
 
 import com.seekheart.superpalapi.model.error.BossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidAlreadyActiveException;
+import com.seekheart.superpalapi.model.error.RaidBossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidNotFoundException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({
       BossNotFoundException.class,
-      RaidNotFoundException.class
+      RaidNotFoundException.class,
+      RaidBossNotFoundException.class
   })
   public void handleNotFound(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.NOT_FOUND.value());

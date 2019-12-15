@@ -48,4 +48,10 @@ public class RaidController {
   public void deleteOne(@PathVariable UUID id) {
     service.deleteOne(id);
   }
+
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PutMapping("/{id}/bosses")
+  public void editBosses(@PathVariable UUID id, @RequestBody RaidRequest raidRequest) {
+    service.editBosses(id, raidRequest);
+  }
 }
