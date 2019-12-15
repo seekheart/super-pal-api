@@ -5,6 +5,7 @@ import com.seekheart.superpalapi.model.domain.Raid;
 import com.seekheart.superpalapi.model.domain.RaidBoss;
 import com.seekheart.superpalapi.model.error.BossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidAlreadyActiveException;
+import com.seekheart.superpalapi.model.error.RaidBossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidNotFoundException;
 import com.seekheart.superpalapi.model.util.RaidStatusOptions;
 import com.seekheart.superpalapi.model.web.RaidRequest;
@@ -185,5 +186,22 @@ public class RaidService {
     raidRepository.delete(raid);
 
     log.info("Successfully deleted raid");
+  }
+
+  public void editBosses(UUID id, RaidRequest request) {
+    log.info("Finding raid for id={}", id);
+    Raid raid = raidRepository.findById(id).orElseThrow(() -> new RaidNotFoundException(id));
+
+    log.info("Finding raid boss ids for raid={}", raid.getId());
+    List<RaidBoss> raidBosses = raidBossRepository.findByRaidId(id).orElse(Collections.emptyList());
+
+    if (raidBosses.isEmpty()) {
+      log.error("No raid bosses are present");
+      throw new RaidBossNotFoundException(id);
+    }
+
+    log.info("Updating health of bosses for raid id={}", id);
+    request.getBosses().forEach(b -> bossRepository.save(b));
+    log.info("Successfully updated all bosses");
   }
 }
