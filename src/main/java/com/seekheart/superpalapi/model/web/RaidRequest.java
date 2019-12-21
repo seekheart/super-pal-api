@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class RaidRequest {
 
   private Long tier;
-  private RaidStatusOptions
-      state;
+  private RaidStatusOptions state;
   private List<Boss> bosses;
 }
