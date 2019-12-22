@@ -1,5 +1,6 @@
 package com.seekheart.superpalapi.web;
 
+import com.seekheart.superpalapi.model.error.BadRaidRequest;
 import com.seekheart.superpalapi.model.error.BossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidAlreadyActiveException;
 import com.seekheart.superpalapi.model.error.RaidBossNotFoundException;
@@ -24,7 +25,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler({
-      RaidAlreadyActiveException.class
+      RaidAlreadyActiveException.class,
+      BadRaidRequest.class
   })
   public void handleBadRequest(HttpServletResponse response) throws IOException {
     response.sendError(HttpStatus.BAD_REQUEST.value());

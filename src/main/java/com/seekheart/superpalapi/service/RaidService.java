@@ -3,6 +3,7 @@ package com.seekheart.superpalapi.service;
 import com.seekheart.superpalapi.model.domain.Boss;
 import com.seekheart.superpalapi.model.domain.Raid;
 import com.seekheart.superpalapi.model.domain.RaidBoss;
+import com.seekheart.superpalapi.model.error.BadRaidRequest;
 import com.seekheart.superpalapi.model.error.BossNotFoundException;
 import com.seekheart.superpalapi.model.error.RaidAlreadyActiveException;
 import com.seekheart.superpalapi.model.error.RaidBossNotFoundException;
@@ -127,6 +128,10 @@ public class RaidService {
       throw new RaidAlreadyActiveException();
     }
 
+    if (request.getTier() < 2 || request.getTier() > 8) {
+      log.error("Cannot have raid tier lower than 2 or greater than 8");
+      throw new BadRaidRequest();
+    }
     log.info("No active raid found, creating raid now!");
     Raid record = Raid.builder()
         .id(UUID.randomUUID())
