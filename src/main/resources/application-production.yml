@@ -1,0 +1,16 @@
+spring:
+  security:
+    user:
+      name: ${USER}
+      password: ${PW}
+  datasource:
+    url: jdbc:postgres:db:5432/super_pal
+    name: super_pal
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER}
+    password: ${DB_PW}
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect

@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  super-pal-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      USER: ${USER}
+      PW: ${PW}
+      DB_PW: ${DB_PW}
+      DB_USER: ${DB_USER}
+      SPRING_ACTIVE_PROFILE: ${SPRING_PROFILE}
+    depends_on:
+      - db
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PW}
+      POSTGRES_USER: ${DB_USER}
