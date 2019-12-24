@@ -13,4 +13,4 @@ spring:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.xml
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

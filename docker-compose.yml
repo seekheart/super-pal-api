@@ -4,12 +4,8 @@ services:
     build: .
     ports:
       - "8080:8080"
-    environment:
-      USER: ${USER}
-      PW: ${PW}
-      DB_PW: ${DB_PW}
-      DB_USER: ${DB_USER}
-      SPRING_ACTIVE_PROFILE: ${SPRING_PROFILE}
+    env_file:
+      - .env
     depends_on:
       - db
   db:
