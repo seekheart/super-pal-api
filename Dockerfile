@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY --chown=gradle:gradle . /app
 
-RUN gradle build --no-daemon
+RUN gradle clean build --no-daemon
 
 FROM openjdk:11-jre-slim
 
