@@ -4,7 +4,7 @@ spring:
       name: ${USER}
       password: ${PW}
   datasource:
-    url: jdbc:postgres:db:5432/super_pal
+    url: jdbc:postgresql:db:5432/super_pal
     name: super_pal
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER}
