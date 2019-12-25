@@ -1,7 +1,11 @@
 package com.seekheart.superpalapi.model.domain;
 
+import com.seekheart.superpalapi.model.util.RaidStatusOptions;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +13,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Builder
 public class Raid {
 
   @Id
   private UUID id;
-  private Long rank;
+  @Column
+  private Long tier;
+  @Enumerated(EnumType.STRING)
+  @Column
+  private RaidStatusOptions state;
 }

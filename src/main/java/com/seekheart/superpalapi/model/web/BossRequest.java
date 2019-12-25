@@ -3,14 +3,13 @@ package com.seekheart.superpalapi.model.web;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode
-@Builder
 @AllArgsConstructor
-public class TeamBossAssignment {
+@NoArgsConstructor
+@Builder
+public class BossRequest {
 
-  private String boss;
-  private String team;
+  private Long damage;
 }

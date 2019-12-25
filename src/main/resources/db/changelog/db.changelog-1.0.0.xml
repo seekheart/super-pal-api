@@ -5,88 +5,49 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
   <changeSet author="miketung" id="01">
-
-    <createTable tableName="Raid">
+    <createTable tableName="raid">
       <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
+        <constraints primaryKey="true"/>
       </column>
-      <column name="rank" type="int">
+      <column name="tier" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="state" type="varchar(50)">
         <constraints nullable="false"/>
       </column>
     </createTable>
 
-    <createTable tableName="League">
+    <createTable tableName="raid_boss">
       <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
+        <constraints primaryKey="true"/>
       </column>
       <column name="raid_id" type="uuid">
-        <constraints foreignKeyName="fk_raid_league" references="Raid(id)"/>
-      </column>
-    </createTable>
-
-    <createTable tableName="Boss">
-      <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="name" type="varchar(180)">
         <constraints nullable="false"/>
-      </column>
-      <column name="hp" type="int"/>
-      <column name="raid_id" type="uuid">
-        <constraints foreignKeyName="fk_raid_boss" references="Raid(id)"/>
-      </column>
-    </createTable>
-
-    <createTable tableName="Team">
-      <column name="id" type="uuid">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="name" type="varchar(25)">
-      </column>
-    </createTable>
-
-    <createTable tableName="Player">
-      <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="discord_id" type="uuid">
-        <constraints unique="true"/>
-      </column>
-      <column name="name" type="varchar(256)">
-        <constraints nullable="true" primaryKey="false" unique="false"/>
-      </column>
-      <column name="league_id" type="uuid">
-        <constraints foreignKeyName="fk_league_player" references="League(id)"/>
-      </column>
-      <column name="role" type="varchar(250)"/>
-    </createTable>
-
-    <createTable tableName="Player_Team">
-      <column name="id" type="uuid">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="player_id" type="uuid">
-        <constraints foreignKeyName="fk_player_team" references="Player(id)"/>
-      </column>
-      <column name="team_id" type="uuid">
-        <constraints foreignKeyName="fk_team_player" references="Team(id)"/>
-      </column>
-    </createTable>
-
-    <createTable tableName="Assignment">
-      <column name="id" type="uuid">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="player_id" type="uuid">
-        <constraints foreignKeyName="fk_player_assignment" references="Player(id)"/>
-      </column>
-      <column name="team_id" type="uuid">
-        <constraints foreignKeyName="fk_team_assignment" references="Team(id)"/>
       </column>
       <column name="boss_id" type="uuid">
-        <constraints foreignKeyName="fk_boss_assignment" references="Boss(id)"/>
+        <constraints nullable="false"/>
       </column>
     </createTable>
 
+    <createTable tableName="boss">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="health" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="name" type="varchar(100)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="raid_boss" baseColumnNames="raid_id"
+      constraintName="raid_id_fk"
+      referencedTableName="raid" referencedColumnNames="id"/>
+
+    <addForeignKeyConstraint baseTableName="raid_boss" baseColumnNames="boss_id"
+      constraintName="boss_id_fk"
+      referencedTableName="boss" referencedColumnNames="id"/>
   </changeSet>
+
 </databaseChangeLog>
