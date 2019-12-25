@@ -4,7 +4,7 @@ spring:
       name: ${USER}
       password: ${PW}
   datasource:
-    url: jdbc:postgresql:db:5432/super_pal
+    url: jdbc:postgresql://db:5432/super_pal
     name: super_pal
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER}
@@ -14,3 +14,13 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+logging:
+  level:
+    com:
+      seekheart:
+        superpalapi:
+          service: info
+          web: info
+          repository: fatal
+          model: fatal
+          config: info

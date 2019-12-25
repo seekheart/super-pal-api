@@ -8,8 +8,11 @@ services:
       - .env
     depends_on:
       - db
+    links:
+      - db
   db:
     image: postgres:12-alpine
     environment:
       POSTGRES_PASSWORD: ${DB_PW}
       POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: super_pal
